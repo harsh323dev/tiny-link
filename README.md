@@ -121,9 +121,3 @@ npx prisma migrate deploy
 ```sh
 npm run dev
 ```
-
-<<<<<<< HEAD
----
-=======
----
->>>>>>> c08d48cf114b4ba1bc2f68afdb501b088df7b85e
