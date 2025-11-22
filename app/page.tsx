@@ -2,13 +2,15 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import LinksTable from "./LinksTable";
+import { Link as LinkType } from "@prisma/client";  // ✅ ADD THIS
 
 export default async function DashboardPage() {
   const linksFromDb = await prisma.link.findMany({
     orderBy: { createdAt: "desc" },
   });
 
-  const links = linksFromDb.map(link => ({
+  // ✅ FIX: explicitly typing "link"
+  const links = linksFromDb.map((link: LinkType) => ({
     ...link,
     lastClickedAt: link.lastClickedAt ? link.lastClickedAt.toISOString() : null,
     createdAt: link.createdAt.toISOString(),
