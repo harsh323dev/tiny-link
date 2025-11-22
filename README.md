@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TinyLink - URL Shortener 🔗
 
-## Getting Started
+A minimal, production-ready URL shortener built with **Next.js 16**, **PostgreSQL (Neon)**, and **Prisma ORM**.  
+Built as part of a take-home assignment.
 
-First, run the development server:
+## 🚀 Live Demo
+**Your Vercel URL:**  
+`https://your-vercel-domain.vercel.app`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+# ✨ Features
+
+### ✅ Core Features
+- Shorten long URLs  
+- Custom short codes  
+- Duplicate code protection  
+- Redirect with HTTP 302  
+- Click tracking  
+- Last clicked timestamp  
+- Delete links  
+- Stats page `/code/:code`  
+- Health check `/healthz`
+
+### 🎨 UI Features
+- Clean dashboard UI  
+- Add URL form  
+- Inline validation  
+- Error + loading states  
+- Responsive design  
+- Copy buttons  
+- Table with clicks + timestamps  
+
+---
+
+# 🗂️ Folder Structure
+
+```
+app/
+ ├── api/
+ │    └── links/
+ │          ├── route.ts          (POST / GET)
+ │          └── [code]/route.ts   (GET stats + DELETE)
+ ├── code/[code]/page.tsx          (Stats page)
+ ├── page.tsx                       (Dashboard)
+ ├── healthz/route.ts               (Health check)
+ ├── not-found.tsx
+lib/
+ └── prisma.ts
+prisma/
+ └── schema.prisma
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# 🔌 API Documentation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ➤ Create Link  
+`POST /api/links`
 
-## Learn More
+**Body (form-data):**
+```txt
+url: https://google.com
+code: optional
+```
 
-To learn more about Next.js, take a look at the following resources:
+**Responses**
+- `201 Created`  
+- `409 Conflict` if code exists  
+- `400 Bad Request` invalid url  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ➤ List All Links  
+`GET /api/links`
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ➤ Get Stats for One Code  
+`GET /api/links/:code`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## ➤ Delete a Link  
+`DELETE /api/links/:code`
+
+---
+
+## ➤ Redirect  
+`GET /:code` → 302 redirect + click count increment.
+
+---
+
+## ➤ Health Check  
+`GET /healthz`
+
+Returns:
+
+```json
+{ "ok": true, "version": "1.0" }
+```
+
+---
+
+# 🧪 How to Run Locally
+
+### 1. Install dependencies
+```sh
+npm install
+```
+
+### 2. Create a `.env` file
+Use the `.env.example` provided.
+
+### 3. Push Prisma schema
+```sh
+npx prisma migrate deploy
+```
+
+### 4. Start dev server
+```sh
+npm run dev
+```
+
+---
