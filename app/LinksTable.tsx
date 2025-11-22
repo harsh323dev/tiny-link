@@ -28,7 +28,7 @@ export default function LinksTable({ initialLinks }: LinksTableProps) {
     if (res.ok) {
       setLinks(links.filter((l) => l.code !== code));
     } else {
-      alert("Failed to delete");
+      alert("Failed to delete!!!!");
     }
   };
 
