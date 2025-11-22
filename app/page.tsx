@@ -1,16 +1,24 @@
 // app/page.tsx
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
 import LinksTable from "./LinksTable";
-import { Link as LinkType } from "@prisma/client";  // ✅ ADD THIS
+
+// Define the type of a link returned from DB
+type LinkFromDB = {
+  id: number;
+  code: string;
+  targetUrl: string;
+  totalClicks: number;
+  lastClickedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export default async function DashboardPage() {
-  const linksFromDb = await prisma.link.findMany({
+  const linksFromDb: LinkFromDB[] = await prisma.link.findMany({
     orderBy: { createdAt: "desc" },
   });
 
-  // ✅ FIX: explicitly typing "link"
-  const links = linksFromDb.map((link: LinkType) => ({
+  const links = linksFromDb.map((link: LinkFromDB) => ({
     ...link,
     lastClickedAt: link.lastClickedAt ? link.lastClickedAt.toISOString() : null,
     createdAt: link.createdAt.toISOString(),
@@ -19,9 +27,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-black text-white p-6">
-      <h1 className="text-4xl font-bold text-center mb-8">
-        TinyLink Dashboard
-      </h1>
+      <h1 className="text-4xl font-bold text-center mb-8">TinyLink Dashboard</h1>
 
       {/* FORM */}
       <form
